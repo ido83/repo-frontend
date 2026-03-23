@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>repo-frontend — DRY Demo</title>
+  <style>
+    body { font-family: monospace; background: #0d1117; color: #c9d1d9; padding: 2rem; }
+    h1   { color: #58a6ff; }
+    .card { background: #161b22; border: 1px solid #30363d; border-radius: 6px;
+            padding: 1rem 1.5rem; margin: 1rem 0; }
+    .label { color: #8b949e; font-size: 0.85rem; }
+    .ok   { color: #3fb950; }
+    a    { color: #58a6ff; }
+  </style>
+</head>
+<body>
+  <h1>🧱 DRY Docker Demo — Frontend</h1>
+
+  <div class="card">
+    <div class="label">Pattern</div>
+    <strong>Pattern 1 (infra-base submodule) + Pattern 3 (override stack)</strong>
+  </div>
+
+  <div class="card">
+    <div class="label">Service</div>
+    <strong>repo-frontend</strong> — nginx:1.25-alpine serving static HTML
+  </div>
+
+  <div class="card">
+    <div class="label">API health</div>
+    <span id="api-status">checking...</span>
+  </div>
+
+  <div class="card">
+    <div class="label">Test the API directly</div>
+    <a href="http://localhost:8080/health" target="_blank">localhost:8080/health</a><br>
+    <a href="http://localhost:8080/api/users" target="_blank">localhost:8080/api/users</a><br>
+    <a href="http://localhost:8080/api/status" target="_blank">localhost:8080/api/status</a>
+  </div>
+
+  <script>
+    fetch('http://localhost:8080/health')
+      .then(r => r.json())
+      .then(d => {
+        document.getElementById('api-status').innerHTML =
+          '<span class="ok">✅ ' + JSON.stringify(d) + '</span>';
+      })
+      .catch(() => {
+        document.getElementById('api-status').textContent =
+          '⚠️ API unreachable (start repo-api-service first)';
+      });
+  </script>
+</body>
+</html>

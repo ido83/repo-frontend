@@ -1,0 +1,8 @@
+# repo-frontend/docker-compose.ci.yml
+# CI: verify the container starts and /health returns 200
+
+services:
+  frontend:
+    environment:
+      LOG_LEVEL: warn
+      ENV: ci

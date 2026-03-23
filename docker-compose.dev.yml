@@ -1,0 +1,11 @@
+# repo-frontend/docker-compose.dev.yml
+# Dev: live-edit HTML files without rebuilding — just save and refresh browser
+
+services:
+  frontend:
+    volumes:
+      - ./html:/usr/share/nginx/html:ro        # Edit html/ and refresh — live
+      - ./nginx/nginx.conf:/etc/nginx/templates/default.conf.template:ro
+    environment:
+      LOG_LEVEL: debug
+      ENV: development
