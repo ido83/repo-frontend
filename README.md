@@ -9,3 +9,8 @@ Run locally:
 ```bash
 ./up.sh dev
 ```
+
+Security:
+
+- .gitleaks.toml is included for repo-level secret scanning
+
