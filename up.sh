@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# up.sh  -  Universal compose runner for repo-frontend
+# up.sh  -  Universal compose runner
 
 set -euo pipefail
 
@@ -8,9 +8,18 @@ shift || true
 
 BASE_FILE="docker-compose.yml"
 OVERRIDE_FILE="docker-compose.${ENV}.yml"
+INFRA_BASE_DIR="../infra-base"
+ENV_FILES=(
+  "--env-file" "$INFRA_BASE_DIR/env/.env.base"
+  "--env-file" "$INFRA_BASE_DIR/env/.env.networking"
+)
 
-if [[ ! -f "../infra-base/compose/base-app.yml" ]]; then
-  echo "Missing shared compose file: ../infra-base/compose/base-app.yml"
+if [[ -f "$INFRA_BASE_DIR/env/.env.secrets" ]]; then
+  ENV_FILES+=("--env-file" "$INFRA_BASE_DIR/env/.env.secrets")
+fi
+
+if [[ ! -f "$INFRA_BASE_DIR/compose/base-app.yml" ]]; then
+  echo "Missing shared compose file: $INFRA_BASE_DIR/compose/base-app.yml"
   exit 1
 fi
 
@@ -24,4 +33,4 @@ else
 fi
 
 echo "Starting stack (ENV=$ENV)..."
-docker compose "${COMPOSE_FILES[@]}" up "$@"
+docker compose "${ENV_FILES[@]}" "${COMPOSE_FILES[@]}" up "$@"
